@@ -1,0 +1,1 @@
+Q:\opencv_c++\MFCApplication3\x64\Debug\MFCApplication3.exe
