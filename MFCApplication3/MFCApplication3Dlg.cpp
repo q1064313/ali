@@ -25,15 +25,15 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-//
+//////////////////////////
 
 
 ////////一些必须的全局变量
-CString m_stredit = NULL;
-CString m_csbaud = NULL;
-CString m_csds= NULL;
-CString m_cssp = NULL;
-CString m_csparity = NULL;
+CString m_stredit = NULL;//获取的添加通道对话框ciadd的editctrl内容
+CString m_csbaud = NULL;//全局波特率
+CString m_csds= NULL;//全局数据位
+CString m_cssp = NULL;//全局停止位
+CString m_csparity = NULL;//全局校验位
 
 extern CString baud;
 
@@ -279,6 +279,7 @@ void CMFCApplication3Dlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 	case 2:
 		break;
 	case 3:
+		LoadXmlchange();
 		pDlg = new c1();
 		pDlg->Create(IDD_mfcc1, this);//子窗体的id
 		pDlg->MoveWindow(ClassInfoRect);
@@ -446,7 +447,6 @@ void CMFCApplication3Dlg::OnDelete()//删除节点
 }
 
 
-
 void CMFCApplication3Dlg::add_com()//添加节点
 {
 	HTREEITEM selItem;
@@ -487,16 +487,48 @@ void CMFCApplication3Dlg::add_com()//添加节点
 
 void CMFCApplication3Dlg::delete_com()//删除节点
 {
+	using namespace tinyxml2;
+	
 	// TODO: 在此添加命令处理程序代码
 	HTREEITEM selItem;
 	//获得选择项
 	selItem = m_tree.GetSelectedItem();
 	//获取选中的内容
 	CString cs = m_tree.GetItemText(selItem);
-	if(cs.Find(_T("通道"))>0)
-	m_tree.DeleteItem(m_tree.GetSelectedItem());
-	else
-	MessageBox(_T("非法删除"));
+	if (cs.Find(_T("通道")) > -1) {
+		m_tree.DeleteItem(m_tree.GetSelectedItem());
+		tinyxml2::XMLDocument doc;
+		if (doc.LoadFile("ConfigFile.xml"))
+		{
+			doc.PrintError();
+			return;
+		}
+
+		XMLElement* chaneelconfig = doc.RootElement();
+		XMLElement* channel = chaneelconfig->FirstChildElement("Channel");
+		CString no = CString(channel->Attribute("No"));
+		while (channel->NextSibling() != nullptr) {
+			if (cs.Find(no) > -1) {
+				break;
+			}
+			else {
+				channel = channel->NextSiblingElement();
+				no = CString(channel->Attribute("No"));
+			}
+		}
+		if (cs.Find(no) > -1) {
+			chaneelconfig->DeleteChild(channel);
+			doc.SaveFile("ConfigFile.xml");
+		}
+		else {
+			return;
+		}
+	}
+	else {
+		MessageBox(_T("非法删除"));
+	}
+
+
 }
 
 
@@ -519,45 +551,114 @@ void CMFCApplication3Dlg::OnBnClickedCancel()
 
 void CMFCApplication3Dlg::OnSaveXml()
 {
-	// TODO: 在此添加命令处理程序代码
+	
+
 	if (m_csbaud.IsEmpty() || m_csds.IsEmpty() || m_csparity.IsEmpty() || m_cssp.IsEmpty()) {
 		MessageBox(_T("参数不全，保存通道配置失败！"));
 		return;
 	}
+
 	HTREEITEM selItem;
-	//获得选择项
 	selItem = m_tree.GetSelectedItem();
-	//获取选中的内容
+
+	tinyxml2::XMLDocument doc;
 	CString cs = m_tree.GetItemText(selItem);
+
 	if (cs.Find(_T("通道")) > 0) {
 		CString cno = cs;
 		cno.TrimRight(_T("通道"));
 		char* noBuff= (LPSTR)(LPCTSTR)cno;
+		if (doc.LoadFile("ConfigFile.xml"))
+		{
+			const char* xmlContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+			tinyxml2::XMLDocument docXml;
+			docXml.Parse(xmlContent);//添加ChannelConfig节点
+			tinyxml2::XMLElement* ChannelConfig = docXml.NewElement("ChannelConfig");
+			docXml.InsertEndChild(ChannelConfig);
+			//添加ChannelConfig节点
 
-		const char* xmlContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
-		tinyxml2::XMLDocument docXml;
-		docXml.Parse(xmlContent);//添加ChannelConfig节点
-		tinyxml2::XMLElement* ChannelConfig = docXml.NewElement("ChannelConfig");
-		docXml.InsertEndChild(ChannelConfig);
-		//添加ChannelConfig节点
+			char ch[20] = { 0 };
+			//	memcpy(ch, m_csbaud, m_csbaud.GetLength
+		// 
+			//	int x = m_csbaud.GetLength();
+			
+			tinyxml2::XMLElement* Channel = docXml.NewElement("Channel");
+			Channel->SetAttribute("No", noBuff);
+			tinyxml2::XMLElement* CommMode = docXml.NewElement("CommMode");
+			for (int i = 0; i <= m_csbaud.GetLength(); i++) {
+				ch[i] = m_csbaud[i];
+			}	
+			CommMode->SetAttribute("Baud", ch);
 
+			for (int i = 0; i <= m_csds.GetLength(); i++) {
+				ch[i] = m_csds[i];
+			}
+			CommMode->SetAttribute("DataSize", ch);
+			for (int i = 0; i <= m_cssp.GetLength(); i++) {
+				ch[i] = m_cssp[i];
+			}
+			CommMode->SetAttribute("Stop", ch);
+			for (int i = 0; i <= m_csparity.GetLength(); i++) {
+				ch[i] = m_csparity[i];
+			}
+			CommMode->SetAttribute("Parity", ch);
 
-		char ch[20] = {0};
-	//	memcpy(ch, m_csbaud, m_csbaud.GetLength
-// 
-	//	int x = m_csbaud.GetLength();
-		for (int i = 0; i <= m_csbaud.GetLength(); i++) {
-			ch[i] = m_csbaud[i];
+			ChannelConfig->InsertEndChild(Channel);
+			Channel->InsertEndChild(CommMode);
+			//保存成XML文件
+			docXml.SaveFile("ConfigFile.xml");
+			MessageBox(_T("保存配置文件成功"));
+			return;
 		}
-		for (int i = 0; i <= m_csbaud.GetLength(); i++) {
-			ch[i] = m_csbaud[i];
+		else{
+		tinyxml2::XMLElement* chaneelconfig = doc.RootElement();
+		tinyxml2::XMLElement* channel = chaneelconfig->FirstChildElement("Channel");
+		CString no = CString(channel->Attribute("No"));
+		while (channel->NextSibling() != nullptr) {
+			if (cs.Find(no) > -1) {
+				break;
+			}
+			else {
+				channel = channel->NextSiblingElement();
+				no = CString(channel->Attribute("No"));
+			}
 		}
-
-		tinyxml2::XMLElement* Channel = docXml.NewElement("Channel");
-		Channel->SetAttribute("No", noBuff);
-		tinyxml2::XMLElement* CommMode = docXml.NewElement("CommMode");
-		CommMode->SetAttribute("Baud", ch);
 		
+		if (!(cs.Find(no) > -1)) {
+			char ch[20] = { 0 };
+			tinyxml2::XMLElement* Channel = doc.NewElement("Channel");
+			Channel->SetAttribute("No", noBuff);
+			tinyxml2::XMLElement* CommMode = doc.NewElement("CommMode");
+			for (int i = 0; i <= m_csbaud.GetLength(); i++) {
+				ch[i] = m_csbaud[i];
+			}
+			CommMode->SetAttribute("Baud", ch);
+			for (int i = 0; i <= m_csds.GetLength(); i++) {
+				ch[i] = m_csds[i];
+			}
+			CommMode->SetAttribute("DataSize", ch);
+			for (int i = 0; i <= m_cssp.GetLength(); i++) {
+				ch[i] = m_cssp[i];
+			}
+			CommMode->SetAttribute("Stop", ch);
+			for (int i = 0; i <= m_csparity.GetLength(); i++) {
+				ch[i] = m_csparity[i];
+			}
+			CommMode->SetAttribute("Parity", ch);
+			chaneelconfig->InsertEndChild(Channel);
+			Channel->InsertEndChild(CommMode);
+			doc.SaveFile("ConfigFile.xml");
+			MessageBox(_T("保存配置文件成功"));
+			return;
+		}
+		else {
+		char ch[20] = {0};
+		tinyxml2::XMLElement* CommMode = channel->FirstChildElement("CommMode");
+		for (int i = 0; i <= m_csbaud.GetLength(); i++) {
+			ch[i] = m_csbaud[i];
+		}
+		CommMode->SetAttribute("Baud", ch);
+
 		for (int i = 0; i <= m_csds.GetLength(); i++) {
 			ch[i] = m_csds[i];
 		}
@@ -570,17 +671,19 @@ void CMFCApplication3Dlg::OnSaveXml()
 			ch[i] = m_csparity[i];
 		}
 		CommMode->SetAttribute("Parity", ch);
-
-		ChannelConfig->InsertEndChild(Channel);
-		Channel->InsertEndChild(CommMode);
-		//保存成XML文件
-		docXml.SaveFile("ConfigFile.xml");
+		doc.SaveFile("ConfigFile.xml");
 		MessageBox(_T("保存配置文件成功"));
-	}
-	else {
+		return;
+		}
+		}
+		
+	}else{
 		MessageBox(_T("只能保存通道配置！"));
 	}
+   return;
+	
 }
+
 void CMFCApplication3Dlg::LoadXml() {
 	using namespace tinyxml2;
 	tinyxml2::XMLDocument doc;
@@ -598,6 +701,10 @@ void CMFCApplication3Dlg::LoadXml() {
 	CString datas = CString(CommMode->Attribute("DataSize"));
 	CString sp = CString(CommMode->Attribute("Stop"));
 	CString pari = CString(CommMode->Attribute("Parity"));
+	m_csbaud = baud;
+	m_csds = datas;
+	m_csparity = pari;
+	m_cssp = sp;
 
 	HTREEITEM hRoot = m_tree.GetRootItem();
 	HTREEITEM selItem;
@@ -626,6 +733,177 @@ void CMFCApplication3Dlg::LoadXml() {
 
 	UpdateData(TRUE);
 
+	while (channel->NextSibling()!= nullptr) {
+		channel = channel->NextSiblingElement();
+		CommMode = channel->FirstChildElement("CommMode");
+
+		no = CString(channel->Attribute("No"));
+		baud = CString(CommMode->Attribute("Baud"));
+		datas = CString(CommMode->Attribute("DataSize"));
+		sp = CString(CommMode->Attribute("Stop"));
+		pari = CString(CommMode->Attribute("Parity"));
+		m_csbaud = baud;
+		m_csds = datas;
+		m_csparity = pari;
+		m_cssp = sp;
+		hRoot = m_tree.GetRootItem();
+		selItem;
+		//获得选择项
+		CString che = _T("采集服务");
+		selItem = FindItem(hRoot, che);
+		if (selItem == NULL)  //判断输入的数据是否和其他的相同 
+		{
+			MessageBox(_T("加载失败!"));
+			return;
+		}
+		UpdateData(FALSE);
+		m_stredit1 = _T("通道");
+		if (!no.IsEmpty()) {
+			m_stredit1 = no + m_stredit1;
+		}
+		else {
+			MessageBox(_T("数据项名称为空，加载失败!"));
+			return;
+		}
+
+		HTREEITEM hNew = m_tree.InsertItem(m_stredit1, 0, 0, selItem);
+		UpdateData(TRUE);
+	}
+
+
+}//启动时的初始化加载
+void CMFCApplication3Dlg::LoadXmlchange(){
+	using namespace tinyxml2;
+	HTREEITEM selItem;
+	//获得选择项
+	selItem = m_tree.GetSelectedItem();
+	//获取选中的内容
+	CString cs = m_tree.GetItemText(selItem);
+	if (cs.Find(_T("通道")) > -1) {
+		
+		tinyxml2::XMLDocument doc;
+		if (doc.LoadFile("ConfigFile.xml"))
+		{
+			doc.PrintError();
+			return;
+		}
+		// 根元素
+		XMLElement* chaneelconfig = doc.RootElement();
+		XMLElement* channel = chaneelconfig->FirstChildElement("Channel");
+		CString no = CString(channel->Attribute("No"));
+		while (channel->NextSibling() != nullptr) {
+			if (cs.Find(no) > -1) {
+				break;
+			}
+			else {
+				channel = channel->NextSiblingElement();
+				no = CString(channel->Attribute("No"));
+			}
+		}
+		if (!(cs.Find(no) > -1)) {
+			return;
+		}
+		XMLElement* CommMode = channel->FirstChildElement("CommMode");
+		CString baud = CString(CommMode->Attribute("Baud"));
+		CString datas = CString(CommMode->Attribute("DataSize"));
+		CString sp = CString(CommMode->Attribute("Stop"));
+		CString pari = CString(CommMode->Attribute("Parity"));
+		m_csbaud = baud;
+		m_csds = datas;
+		m_csparity = pari;
+		m_cssp = sp;
+	}
+
+}
+//当页面切换时，对其进行加载
+/*
+
+
+void Modbus03H(uint8_t* pMbBuf, uint8_t u8MbBufLEN)   //上位机读取指令
+{
+	uint16_t u16Add = 0;    //起始地址
+	uint16_t u16Num = 0;   //要读取的寄存器个数 
+	uint16_t u16Cnt = 0;    //数据个数 
+	if (u8MbBufLEN != 8)   //判断接收数组长度,03功能码8个字节 
+	{
+		//Send ErrCode  发送故障码程序;
+		return;
+	}
+	//要读取寄存器的地址，将收到数组3、4位合并，得到寄存器起始地址
+	u16Add = pMbBuff[2] << 8 | pMbBuf[3];
+	//读取字节个数，将收到数组5、6位合并，得到读取的寄存器数量
+	u16Num = pMbBuf[4] << 8 | pMbBuf[5];
+	MdobusTxCnt = 0;     //要发送的数据个数
+	ModbusBuf[MdobusTxCnt++] = pMbBuf[0];    //发送接收到数组的第1位，即地址码
+	ModbusBuf[MdobusTxCnt++] = pMbBuf[1];    //发送接收到数组的第2位，即功能码
+	ModbusBuf[MdobusTxCnt++] = u16Num * 2;     //返回发送数据后面数据的字节个数，一个寄存器有2个字节
+	for (u16Cnt = 0; u16Cnt < u16Num; u16Cnt++)
+	{
+		//Send Data 发送相应报文程序
+	
+	MdobusTxCnt += 2;            //发送的数据后移两个字节
+}
+CRCSendBuf(ModbusBuf, MdobusTxCnt);  //CRC计算程序网上有很多例程，发送校验位
 }
 
 
+
+class _03Hcode
+{
+public:
+	 _03Hcode();
+	~_03Hcode();
+     std::vector<INT8> calcrc(char* nocrc);
+private:
+	INT8 slaveAddress = 0x00;
+	INT8 slaveFuncode = 0x03;
+	INT8 slaveData[252]={0x00};
+	INT8 slaveCrc[2]={0x00,0x00};
+	int datalen =8;
+	BOOL setAddr(char saddr);
+	BOOL setData(char* sd, size_t len);
+	BOOL setCrc(char* crc);
+	
+};
+
+_03Hcode::_03Hcode()
+{
+	setAddr(0x00);
+	char init[2] = { 0x00,0x00 };
+	setData(init,2);
+	setCrc(init);
+}
+
+_03Hcode::~_03Hcode()
+{
+}
+
+BOOL _03Hcode::setAddr(char saddr)
+{
+	slaveAddress = saddr;
+	return TRUE;
+}
+
+BOOL _03Hcode::setData(char* sd, size_t len)
+{
+	for (int i = 0; i < len; i++) {
+		slaveData[i] = sd[i];
+	}
+	return TRUE;
+}
+
+BOOL _03Hcode::setCrc(char* crc)
+{
+	slaveCrc[0] = crc[0];
+	slaveCrc[1] = crc[1];
+	return TRUE;
+}
+
+std::vector<INT8> _03Hcode::calcrc(char* nocrc)
+{
+	std::vector<INT8>retx(2, 0x00);
+
+
+	return std::vector<INT8>();
+}
+*/

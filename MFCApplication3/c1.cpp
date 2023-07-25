@@ -102,7 +102,6 @@ BOOL c1::OnInitDialog()
 	
 	CComboBox* pRecvStrRate = (CComboBox*)GetDlgItem(IDC_COMBO_BAUDRATE);
 	pRecvStrRate->SetCurSel(0);
-
 	CComboBox* pRecvStrBit = (CComboBox*)GetDlgItem(IDC_COMBO_BITS);
 	pRecvStrBit->SetCurSel(0);
 
@@ -111,10 +110,20 @@ BOOL c1::OnInitDialog()
 
 	CComboBox* pRecvStrCheck = (CComboBox*)GetDlgItem(IDC_COMBO_CHECK);
 	pRecvStrCheck->SetCurSel(0);
-	m_c_baud.GetWindowText(m_csbaud);
-	m_c_bit.GetWindowText(m_csds);
-	m_c_stp.GetWindowText(m_cssp);
-	m_c_parity.GetWindowText(m_csparity);
+	if (m_csbaud.IsEmpty() || m_csds.IsEmpty() || m_csparity.IsEmpty() || m_cssp.IsEmpty()) {
+		m_c_baud.GetWindowText(m_csbaud);
+		m_c_bit.GetWindowText(m_csds);
+		m_c_stp.GetWindowText(m_cssp);
+		m_c_parity.GetWindowText(m_csparity);
+	}
+	else
+	{
+		pRecvStrRate->SelectString(0, m_csbaud);
+		pRecvStrBit->SelectString(0, m_csds);
+		pRecvStrSbit->SelectString(0, m_cssp);
+		pRecvStrCheck->SelectString(0, m_csparity);
+	}
+	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }

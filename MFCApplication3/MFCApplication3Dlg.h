@@ -59,5 +59,6 @@ public:
 	CStatic m_statuchild;
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnSaveXml();
-	void LoadXml();
+	void CMFCApplication3Dlg::LoadXml();
+	void CMFCApplication3Dlg::LoadXmlchange();
 };

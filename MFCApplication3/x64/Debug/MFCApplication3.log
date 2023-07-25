@@ -1,9 +1,30 @@
-﻿  c1.cpp
-Q:\opencv_c++\MFCApplication3\c1.cpp(151,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(158,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(165,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(178,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(210,33): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(213,11): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(374,28): warning C4244: “=”: 从“INT_PTR”转换到“USHORT”，可能丢失数据
+﻿  pch.cpp
+  c1.cpp
+Q:\opencv_c++\MFCApplication3\c1.cpp(160,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(167,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(174,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(187,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(219,33): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(222,11): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(383,28): warning C4244: “=”: 从“INT_PTR”转换到“USHORT”，可能丢失数据
+  caiji.cpp
+  cdiadd.cpp
+  kong.cpp
+  MFCApplication3.cpp
+  MFCApplication3Dlg.cpp
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(589,23): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(594,21): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(598,21): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(602,25): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(633,23): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(637,21): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(641,21): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(645,25): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(658,22): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(663,20): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(667,20): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(671,24): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+  MQTT_ZF.cpp
+  tinyxml2.cpp
+  正在生成代码...
   MFCApplication3.vcxproj -> Q:\opencv_c++\MFCApplication3\x64\Debug\MFCApplication3.exe
