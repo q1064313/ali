@@ -1,6 +1,5 @@
 ﻿// c1.cpp: 实现文件
 //
-
 #include "pch.h"
 #include "MFCApplication3.h"
 #include "afxdialogex.h"
@@ -10,20 +9,23 @@
 #include <winspool.h>
 #include <vector>
 #include <sys/types.h>
-CUIntArray ports;	//所有存在的串口
-CUIntArray portse;	//可用的串口
-CUIntArray portsu;	//已占用的串口
 #define MAX_SCAN_CNT 16
 
 
+CUIntArray ports;	//所有存在的串口
+CUIntArray portse;	//可用的串口
+CUIntArray portsu;	//已占用的串口
+int close_flag = 0;
+extern CString m_csbaud;
+extern CString m_csds;
+extern CString m_cssp;
+extern CString m_csparity;
 
 HANDLE hthread = NULL;
 HANDLE hCom = INVALID_HANDLE_VALUE;
 
 DWORD WINAPI ThreadProc1(LPVOID lpParam);
 // c1 对话框
-
-int close_flag = 0;
 
 
 
@@ -34,6 +36,7 @@ c1::c1(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_mfcc1, pParent)
 	, m_edit_recv(_T(""))
 	, m_edit_send(_T(""))
+	
 {
 
 }
@@ -50,12 +53,22 @@ void c1::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_CLOSE, m_close);
 	DDX_Text(pDX, IDC_EDIT_RECEIVE, m_edit_recv);
 	DDX_Text(pDX, IDC_EDIT_SEND, m_edit_send);
+	//  DDX_CBString(pDX, IDC_COMBO_BAUDRATE, m_c_baud);
+	DDX_Control(pDX, IDC_COMBO_BAUDRATE, m_c_baud);
+	//  DDX_Control(pDX, IDC_COMBO_BITS, m);
+	DDX_Control(pDX, IDC_COMBO_BITS, m_c_bit);
+	DDX_Control(pDX, IDC_COMBO_STOPBITS, m_c_stp);
+	DDX_Control(pDX, IDC_COMBO_CHECK, m_c_parity);
 }
 
 
 BEGIN_MESSAGE_MAP(c1, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_SEND, &c1::OnBnClickedButtonSend)
 	ON_BN_CLICKED(IDC_BUTTON_OPEN, &c1::OnBnClickedButtonOpen)
+	ON_CBN_SELCHANGE(IDC_COMBO_CHECK, &c1::OnCbnSelchangeComboCheck)
+	ON_CBN_SELCHANGE(IDC_COMBO_STOPBITS, &c1::OnCbnSelchangeComboStopbits)
+	ON_CBN_SELCHANGE(IDC_COMBO_BITS, &c1::OnCbnSelchangeComboBits)
+	ON_CBN_SELCHANGE(IDC_COMBO_BAUDRATE, &c1::OnCbnSelchangeComboBaudrate)
 	ON_BN_CLICKED(IDC_BUTTON_CLOSE, &c1::OnBnClickedButtonClose)
 	ON_BN_CLICKED(IDC_BUTTON_CLEAR, &c1::OnBnClickedButtonClear)
 	ON_BN_CLICKED(IDC_BUTTON_CLEAR1, &c1::OnBnClickedButtonClear1)
@@ -72,7 +85,6 @@ BOOL c1::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 	
-
 //	CComboBox* pRecvStrNum = (CComboBox*)GetDlgItem(IDC_COMBO_COM);
 //	pRecvStrNum->SetCurSel(0);
 	
@@ -99,9 +111,10 @@ BOOL c1::OnInitDialog()
 
 	CComboBox* pRecvStrCheck = (CComboBox*)GetDlgItem(IDC_COMBO_CHECK);
 	pRecvStrCheck->SetCurSel(0);
-
-
-
+	m_c_baud.GetWindowText(m_csbaud);
+	m_c_bit.GetWindowText(m_csds);
+	m_c_stp.GetWindowText(m_cssp);
+	m_c_parity.GetWindowText(m_csparity);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
@@ -129,7 +142,7 @@ void c1::initSport()
 	Timeouts.WriteTotalTimeoutMultiplier = 100;
 	Timeouts.WriteTotalTimeoutConstant = 50;
 	SetCommTimeouts(hCom, &Timeouts);
-
+	
 	DCB dcb;
 	GetCommState(hCom, &dcb);
 	CComboBox* precvStrRate = (CComboBox*)GetDlgItem(IDC_COMBO_BAUDRATE);
@@ -149,19 +162,22 @@ void c1::initSport()
 	CComboBox* precvStrSbit = (CComboBox*)GetDlgItem(IDC_COMBO_STOPBITS);
 	precvStrSbit->GetWindowText(strtemp);
 	for (int i = 0; i <= strtemp.GetLength(); i++) {
-		a[i] = strtemp[i];
+		a[i] = strtemp[i]; 
+
 	}
 	if (0 == strcmp(a, "1")) {
-		dcb.Parity = ONESTOPBIT;
+		dcb.StopBits = ONESTOPBIT;
 	}
 	if (0 == strcmp(a, "2")) {
-		dcb.Parity = TWOSTOPBITS;
+		dcb.StopBits = TWOSTOPBITS;
 	}
 
 	CComboBox* precvStrCheck = (CComboBox*)GetDlgItem(IDC_COMBO_CHECK);
 	precvStrCheck->GetWindowText(strtemp);
 	for (int i = 0; i <= strtemp.GetLength(); i++) {
 		a[i] = strtemp[i];
+		
+
 	}
 	if (0 == strcmp(a, "none")) {
 		dcb.Parity = NOPARITY;
@@ -219,6 +235,13 @@ void c1::OnBnClickedButtonOpen()
 	if (hCom == INVALID_HANDLE_VALUE) {
 		return;
 	}
+//	m_c_baud.GetWindowText(m_csbaud);
+//	m_c_bit.GetWindowText(m_csds);
+//	m_c_stp.GetWindowText(m_cssp);
+//	m_c_parity.GetWindowText(m_csparity);
+
+
+
 	hthread = CreateThread(NULL, 0, ThreadProc1, (LPVOID)(this), 0, NULL);
 	m_send.EnableWindow(1);
 	m_close.EnableWindow(1);
@@ -305,9 +328,8 @@ void c1::EnumerateSerialPorts(CUIntArray& porta, CUIntArray& portse, CUIntArray&
 	porta.RemoveAll();
 	portse.RemoveAll();
 	portsu.RemoveAll();
-	//因为至多有255个串口，所以依次检查各串口是否存在                                                   
-	//如果能打开某一串口，或打开串口不成功，但返回的是 ERROR_ACCESS_DENIED错误信息，                    
-	//都认为串口存在，只不过后者表明串口已经被占用                                                      
+	//依次检查各串口是否存在                                                   
+	//如果能打开某一串口，或打开串口不成功，但返回的是 ERROR_ACCESS_DENIED错误信息，都认为串口存在，只不过后者表明串口已经被占用                                                      
 	//否则串口不存在
 	for (int i = 1; i < MAX_SCAN_CNT; i++)
 	{
@@ -374,4 +396,35 @@ void c1::OnDestroy()
 		CloseHandle(hCom);
 	}
 	// TODO: 在此处添加消息处理程序代码
+}
+
+
+void c1::OnCbnSelchangeComboBaudrate()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	m_c_baud.GetWindowText(m_csbaud);
+	
+}
+
+
+void c1::OnCbnSelchangeComboBits()
+{
+	m_c_bit.GetWindowText(m_csds);
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+
+
+void c1::OnCbnSelchangeComboStopbits()
+{
+	m_c_stp.GetWindowText(m_cssp);
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void c1::OnCbnSelchangeComboCheck()
+{
+	m_c_parity.GetWindowText(m_csparity);
+	// TODO: 在此添加控件通知处理程序代码
 }

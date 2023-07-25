@@ -37,4 +37,14 @@ public:
 	void c1::EnumerateSerialPorts(CUIntArray& porta, CUIntArray& portse, CUIntArray& portsu);
 	USHORT c1::AddCom(CComboBox* pvect);
 	afx_msg void OnDestroy();
+//	CString m_c_baud;
+	CComboBox m_c_baud;
+//	CComboBox m;
+	CComboBox m_c_bit;
+	CComboBox m_c_stp;
+	CComboBox m_c_parity;
+	afx_msg void OnCbnSelchangeComboBaudrate();
+	afx_msg void OnCbnSelchangeComboBits();
+	afx_msg void OnCbnSelchangeComboStopbits();
+	afx_msg void OnCbnSelchangeComboCheck();
 };

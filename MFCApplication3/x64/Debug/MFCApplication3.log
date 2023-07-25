@@ -1,9 +1,9 @@
 ﻿  c1.cpp
-Q:\opencv_c++\MFCApplication3\c1.cpp(138,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(145,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(152,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(164,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(194,33): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(197,11): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-Q:\opencv_c++\MFCApplication3\c1.cpp(352,28): warning C4244: “=”: 从“INT_PTR”转换到“USHORT”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(151,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(158,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(165,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(178,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(210,33): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(213,11): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(374,28): warning C4244: “=”: 从“INT_PTR”转换到“USHORT”，可能丢失数据
   MFCApplication3.vcxproj -> Q:\opencv_c++\MFCApplication3\x64\Debug\MFCApplication3.exe

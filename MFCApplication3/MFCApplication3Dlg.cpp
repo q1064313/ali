@@ -1,5 +1,13 @@
 ﻿// MFCApplication3Dlg.cpp: 实现文件
 //
+// c1: 切换到x通道显示的界面
+//MQTT_ZF：mqtt转发界面
+// cdiadd：采集添加通道jiemian
+// caiji：采集界面
+// menu1：主菜单栏
+// menu2：右键菜单栏 
+// 
+// 
 //头文件
 #include "pch.h"
 #include "framework.h"
@@ -12,6 +20,8 @@
 #include "MQTT_zf.h"
 #include "caiji.h"
 #include<vector>
+#include "tinyxml2.h"
+#include<iostream>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -20,6 +30,12 @@
 
 ////////一些必须的全局变量
 CString m_stredit = NULL;
+CString m_csbaud = NULL;
+CString m_csds= NULL;
+CString m_cssp = NULL;
+CString m_csparity = NULL;
+
+extern CString baud;
 
 std::vector<CString> treeitem;//用于对tree切换窗口的数组
 ///////
@@ -88,6 +104,7 @@ BEGIN_MESSAGE_MAP(CMFCApplication3Dlg, CDialogEx)
 	ON_COMMAND(ID_32783, &CMFCApplication3Dlg::aboutinfo)
 
 ON_BN_CLICKED(IDCANCEL, &CMFCApplication3Dlg::OnBnClickedCancel)
+ON_COMMAND(ID_32774, &CMFCApplication3Dlg::OnSaveXml)
 END_MESSAGE_MAP()
 /////////////////////////// CMFCApplication3Dlg 消息处理程序
 
@@ -157,7 +174,7 @@ BOOL CMFCApplication3Dlg::OnInitDialog()
 	rcTemp.BottomRight() = CPoint(cx / 2 + nDstWidth / 2, cy / 2 + nDstHeight / 2);
 	MoveWindow(&rcTemp);
 
-
+	LoadXml();
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -225,11 +242,12 @@ void CMFCApplication3Dlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 
 	HTREEITEM selItem;
-	//获得选择项
+	
+
 	selItem = m_tree.GetSelectedItem();
-	//获取选中的内容
+	
+
 	CString cs = m_tree.GetItemText(selItem);
-	//CString che = _T("采集服务");
 
 	int flag = -1;
 	for (int i = 0; i < treeitem.size(); i++) {
@@ -241,24 +259,17 @@ void CMFCApplication3Dlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 	CRect ClassInfoRect;
 	GetDlgItem(IDC_STATIC_CHILD)->GetWindowRect(&ClassInfoRect);
 	ScreenToClient(ClassInfoRect);
-
+	if (pChildDialog != NULL)
+	{
+		pChildDialog->DestroyWindow();
+		delete pChildDialog;
+		pChildDialog = nullptr;
+	}
 	switch (flag)
 	{
 	case 0:
-		if (pChildDialog != NULL)
-		{
-			pChildDialog->DestroyWindow();
-			delete pChildDialog;
-			pChildDialog = nullptr;
-		}
 		break;
 	case 1:
-		if (pChildDialog != NULL)
-		{
-			pChildDialog->DestroyWindow();
-			delete pChildDialog;
-			pChildDialog = nullptr;
-		}
 		caijidlg = new caiji();
 		caijidlg->Create(IDD_caiji, this);//子窗体的id
 		caijidlg->MoveWindow(ClassInfoRect);
@@ -266,20 +277,8 @@ void CMFCApplication3Dlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 		pChildDialog = caijidlg;
 		break;
 	case 2:
-		if (pChildDialog != NULL)
-		{
-			pChildDialog->DestroyWindow();
-			delete pChildDialog;
-			pChildDialog = nullptr;
-		}
+		break;
 	case 3:
-		if (pChildDialog != NULL)
-		{
-			pChildDialog->DestroyWindow();
-			delete pChildDialog;
-			pChildDialog = nullptr;
-
-		}
 		pDlg = new c1();
 		pDlg->Create(IDD_mfcc1, this);//子窗体的id
 		pDlg->MoveWindow(ClassInfoRect);
@@ -287,12 +286,6 @@ void CMFCApplication3Dlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 		pChildDialog = pDlg;
 		break;
 	case 4:
-		if (pChildDialog != NULL)
-		{
-			pChildDialog->DestroyWindow();
-			delete pChildDialog;
-			pChildDialog = nullptr;
-		}
 		mqttdlg = new MQTT_ZF();
 		mqttdlg->Create(IDD_MQTT_zf, this);//子窗体的id
 		mqttdlg->MoveWindow(ClassInfoRect);
@@ -300,12 +293,6 @@ void CMFCApplication3Dlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 		pChildDialog = mqttdlg;
 		break;
 	default:
-		if (pChildDialog != NULL)
-		{
-			pChildDialog->DestroyWindow();
-			delete pChildDialog;
-			pChildDialog = nullptr;
-		}
 		break;
 
 	}
@@ -433,10 +420,10 @@ void CMFCApplication3Dlg::OnNMRClickTree(NMHDR* pNMHDR, LRESULT* pResult)
 	//临时鼠标的屏幕坐标，用来弹出menu
 	CPoint ScreenPt;
 	GetCursorPos(&ScreenPt);
-
 	//获取到当前鼠标选择的树节点
 	HTREEITEM m_CurTree = m_tree.GetSelectedItem();
-	if (m_CurTree !=NULL )
+	CString cs = m_tree.GetItemText(m_CurTree);
+	if (cs ==treeitem[1]||cs.Find(treeitem[3])>-1)
 	{
 		//m_webTree.SelectItem(m_CurTree); //使右键单击的树节点被选中
 		CMenu menu;
@@ -492,14 +479,9 @@ void CMFCApplication3Dlg::add_com()//添加节点
 		MessageBox(_T("该数据已存在"));
 		return;
 	}
-	
-
-	
 	HTREEITEM hNew = m_tree.InsertItem(m_stredit1, 0, 0, m_tree.GetSelectedItem());
 	
 	UpdateData(TRUE);
-
-
 }
 
 
@@ -533,3 +515,117 @@ void CMFCApplication3Dlg::OnBnClickedCancel()
 	CDialogEx::OnCancel();
 	exit(0);
 }
+
+
+void CMFCApplication3Dlg::OnSaveXml()
+{
+	// TODO: 在此添加命令处理程序代码
+	if (m_csbaud.IsEmpty() || m_csds.IsEmpty() || m_csparity.IsEmpty() || m_cssp.IsEmpty()) {
+		MessageBox(_T("参数不全，保存通道配置失败！"));
+		return;
+	}
+	HTREEITEM selItem;
+	//获得选择项
+	selItem = m_tree.GetSelectedItem();
+	//获取选中的内容
+	CString cs = m_tree.GetItemText(selItem);
+	if (cs.Find(_T("通道")) > 0) {
+		CString cno = cs;
+		cno.TrimRight(_T("通道"));
+		char* noBuff= (LPSTR)(LPCTSTR)cno;
+
+		const char* xmlContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+		tinyxml2::XMLDocument docXml;
+		docXml.Parse(xmlContent);//添加ChannelConfig节点
+		tinyxml2::XMLElement* ChannelConfig = docXml.NewElement("ChannelConfig");
+		docXml.InsertEndChild(ChannelConfig);
+		//添加ChannelConfig节点
+
+
+		char ch[20] = {0};
+	//	memcpy(ch, m_csbaud, m_csbaud.GetLength
+// 
+	//	int x = m_csbaud.GetLength();
+		for (int i = 0; i <= m_csbaud.GetLength(); i++) {
+			ch[i] = m_csbaud[i];
+		}
+		for (int i = 0; i <= m_csbaud.GetLength(); i++) {
+			ch[i] = m_csbaud[i];
+		}
+
+		tinyxml2::XMLElement* Channel = docXml.NewElement("Channel");
+		Channel->SetAttribute("No", noBuff);
+		tinyxml2::XMLElement* CommMode = docXml.NewElement("CommMode");
+		CommMode->SetAttribute("Baud", ch);
+		
+		for (int i = 0; i <= m_csds.GetLength(); i++) {
+			ch[i] = m_csds[i];
+		}
+		CommMode->SetAttribute("DataSize", ch);
+		for (int i = 0; i <= m_cssp.GetLength(); i++) {
+			ch[i] = m_cssp[i];
+		}
+		CommMode->SetAttribute("Stop", ch);
+		for (int i = 0; i <= m_csparity.GetLength(); i++) {
+			ch[i] = m_csparity[i];
+		}
+		CommMode->SetAttribute("Parity", ch);
+
+		ChannelConfig->InsertEndChild(Channel);
+		Channel->InsertEndChild(CommMode);
+		//保存成XML文件
+		docXml.SaveFile("ConfigFile.xml");
+		MessageBox(_T("保存配置文件成功"));
+	}
+	else {
+		MessageBox(_T("只能保存通道配置！"));
+	}
+}
+void CMFCApplication3Dlg::LoadXml() {
+	using namespace tinyxml2;
+	tinyxml2::XMLDocument doc;
+	if (doc.LoadFile("ConfigFile.xml"))
+	{
+		doc.PrintError();
+		return;
+	}
+	// 根元素
+	XMLElement* chaneelconfig = doc.RootElement();
+	XMLElement* channel= chaneelconfig->FirstChildElement("Channel");
+	XMLElement* CommMode = channel->FirstChildElement("CommMode");
+	CString no = CString(channel->Attribute("No"));
+	CString baud = CString(CommMode->Attribute("Baud"));
+	CString datas = CString(CommMode->Attribute("DataSize"));
+	CString sp = CString(CommMode->Attribute("Stop"));
+	CString pari = CString(CommMode->Attribute("Parity"));
+
+	HTREEITEM hRoot = m_tree.GetRootItem();
+	HTREEITEM selItem;
+
+	//获得选择项
+	CString che = _T("采集服务");
+	selItem = FindItem(hRoot, che);
+	if (selItem == NULL)  //判断输入的数据是否和其他的相同 
+	{
+		MessageBox(_T("加载失败!"));
+		return;
+	}
+	UpdateData(FALSE);
+	CString m_stredit1 = _T("通道");
+	if (!no.IsEmpty()) {
+		m_stredit1 = no + m_stredit1;
+	}
+	else {
+		MessageBox(_T("数据项名称为空，加载失败!"));
+		return;
+	}
+	//rootstr = m_webTree.GetItemText(hRoot);  
+
+	HTREEITEM hNew = m_tree.InsertItem(m_stredit1, 0, 0, selItem);
+
+
+	UpdateData(TRUE);
+
+}
+
+

@@ -53,6 +53,8 @@
 #define IDC_caiji                       1031
 #define IDC_caiji_time                  1032
 #define IDC_excelbut                    1033
+#define IDC_TAB_mqtt                    1034
+#define IDC_BUTTON_test                 1035
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -74,7 +76,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        151
 #define _APS_NEXT_COMMAND_VALUE         32785
-#define _APS_NEXT_CONTROL_VALUE         1034
+#define _APS_NEXT_CONTROL_VALUE         1036
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -20,6 +20,7 @@ public:
 	c1* pDlg;
 	MQTT_ZF* mqttdlg;
 	caiji* caijidlg;
+
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_MFCAPPLICATION3_DIALOG };
@@ -57,4 +58,6 @@ public:
 	afx_msg void aboutinfo();
 	CStatic m_statuchild;
 	afx_msg void OnBnClickedCancel();
+	afx_msg void OnSaveXml();
+	void LoadXml();
 };
