@@ -14,6 +14,8 @@
 #define IDD_Kong                        140
 #define IDD_MQTT_zf                     146
 #define IDD_caiji                       148
+#define IDD_basicinfo                   151
+#define IDD_AI                          154
 #define IDC_TREE                        1000
 #define IDC_BUTTON_SEND                 1001
 #define IDC_EDIT_RECEIVE                1002
@@ -54,7 +56,14 @@
 #define IDC_caiji_time                  1032
 #define IDC_excelbut                    1033
 #define IDC_TAB_mqtt                    1034
-#define IDC_BUTTON_test                 1035
+#define IDC_devtab                      1036
+#define IDC_jibencanshu                 1037
+#define IDC_EDIT_devid                  1038
+#define IDC_EDIT_devdescrib             1039
+#define IDC_EDIT_devname                1040
+#define IDC_COMBO_protocol              1042
+#define IDC_LIST_AI                     1043
+#define IDC_tabarea                     1044
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -69,14 +78,15 @@
 #define ID_32782                        32782
 #define ID_32783                        32783
 #define ID_32784                        32784
+#define ID_32785                        32785
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        151
-#define _APS_NEXT_COMMAND_VALUE         32785
-#define _APS_NEXT_CONTROL_VALUE         1036
+#define _APS_NEXT_RESOURCE_VALUE        156
+#define _APS_NEXT_COMMAND_VALUE         32786
+#define _APS_NEXT_CONTROL_VALUE         1045
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

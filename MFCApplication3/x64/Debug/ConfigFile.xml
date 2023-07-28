@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ChannelConfig>
+    <Channel No="5">
+        <CommMode Baud="1200" DataSize="5" Stop="1" Parity="none"/>
+    </Channel>
+</ChannelConfig>

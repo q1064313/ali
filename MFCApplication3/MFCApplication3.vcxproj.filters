@@ -39,9 +39,6 @@
     <ClInclude Include="c1.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="kong.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="MQTT_ZF.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -49,6 +46,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Devtab.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dev_basicinfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AI.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,9 +74,6 @@
     <ClCompile Include="c1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="kong.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="MQTT_ZF.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -78,6 +81,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Devtab.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dev_basicinfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

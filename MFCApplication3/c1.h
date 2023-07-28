@@ -47,4 +47,5 @@ public:
 	afx_msg void OnCbnSelchangeComboBits();
 	afx_msg void OnCbnSelchangeComboStopbits();
 	afx_msg void OnCbnSelchangeComboCheck();
+	afx_msg void Onsave();
 };

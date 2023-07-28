@@ -187,11 +187,13 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
     <ClInclude Include="c1.h" />
     <ClInclude Include="caiji.h" />
     <ClInclude Include="cdiadd.h" />
+    <ClInclude Include="Devtab.h" />
+    <ClInclude Include="dev_basicinfo.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="kong.h" />
     <ClInclude Include="MFCApplication3.h" />
     <ClInclude Include="MFCApplication3Dlg.h" />
     <ClInclude Include="MQTT_ZF.h" />
@@ -201,10 +203,12 @@
     <ClInclude Include="tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="c1.cpp" />
     <ClCompile Include="caiji.cpp" />
     <ClCompile Include="cdiadd.cpp" />
-    <ClCompile Include="kong.cpp" />
+    <ClCompile Include="Devtab.cpp" />
+    <ClCompile Include="dev_basicinfo.cpp" />
     <ClCompile Include="MFCApplication3.cpp" />
     <ClCompile Include="MFCApplication3Dlg.cpp" />
     <ClCompile Include="MQTT_ZF.cpp" />

@@ -2,10 +2,14 @@
 // MFCApplication3Dlg.h: 头文件
 //
 #include "c1.h"
-#include"kong.h"
 #include "MQTT_zf.h"
 #include "caiji.h"
+#include"devtab.h"
+#include"dev_basicinfo.h"
+#include"tinyxml2.h"
 #pragma once
+
+
 
 
 // CMFCApplication3Dlg 对话框
@@ -20,6 +24,7 @@ public:
 	c1* pDlg;
 	MQTT_ZF* mqttdlg;
 	caiji* caijidlg;
+	Devtab* devtabdlg;
 
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
@@ -48,7 +53,6 @@ public:
 	HTREEITEM CMFCApplication3Dlg::FindItem(HTREEITEM item, CString strText);
 	BOOL CMFCApplication3Dlg::PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnAdd();
-	afx_msg void OnDelete();
 
 	afx_msg void OnNMRClickTree(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnTvnBeginlabeleditTree(NMHDR* pNMHDR, LRESULT* pResult);
@@ -61,4 +65,11 @@ public:
 	afx_msg void OnSaveXml();
 	void CMFCApplication3Dlg::LoadXml();
 	void CMFCApplication3Dlg::LoadXmlchange();
+	afx_msg void Onadddev();
+	void CMFCApplication3Dlg::getval(char* ch, CString source);
+	void CMFCApplication3Dlg::setchannel(tinyxml2::XMLElement* CommMode);
+	void CMFCApplication3Dlg::savexml( CString cs,HTREEITEM selItem);
+	void CMFCApplication3Dlg::saveDevicexml(CString cs);
+	void CMFCApplication3Dlg::setdevice(HTREEITEM selItem, tinyxml2::XMLDocument* doc, tinyxml2::XMLElement* Channel);
+
 };

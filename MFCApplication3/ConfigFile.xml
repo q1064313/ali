@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ChannelConfig>
+    <Channel No="2">
+        <CommMode Baud="9600" DataSize="8" Stop="1" Parity="none"/>
+        <Device Name="6Device" File="6Device.xml"/>
+        <Device Name="5Device" File="5Device.xml"/>
+    </Channel>
+    <Channel No="4">
+        <CommMode Baud="4800" DataSize="6" Stop="2" Parity="none"/>
+        <Device Name="9Device" File="9Device.xml"/>
+    </Channel>
+</ChannelConfig>
