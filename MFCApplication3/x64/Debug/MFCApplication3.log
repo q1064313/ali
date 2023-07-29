@@ -1,5 +1,3 @@
-﻿  Devtab.cpp
-  MFCApplication3Dlg.cpp
-Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(897,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-  正在生成代码...
+﻿  MFCApplication3Dlg.cpp
+Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(994,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
   MFCApplication3.vcxproj -> Q:\opencv_c++\MFCApplication3\x64\Debug\MFCApplication3.exe

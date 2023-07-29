@@ -533,7 +533,7 @@ void CMFCApplication3Dlg::Onadddev()
 void CMFCApplication3Dlg::delete_com()//删除节点
 {
 	using namespace tinyxml2;
-	
+
 	// TODO: 在此添加命令处理程序代码
 	HTREEITEM selItem;
 	//获得选择项
@@ -571,7 +571,54 @@ void CMFCApplication3Dlg::delete_com()//删除节点
 	}
 	else {
 		if (cs.Find(_T("Device")) > -1) {
-		m_tree.DeleteItem(m_tree.GetSelectedItem());
+			HTREEITEM parentcom;
+			parentcom = m_tree.GetParentItem(selItem);
+			m_tree.DeleteItem(m_tree.GetSelectedItem());
+			tinyxml2::XMLDocument doc;
+			if (doc.LoadFile("ConfigFile.xml"))
+			{
+				doc.PrintError();
+				return;
+			}
+			XMLElement* chaneelconfig = doc.RootElement();
+			XMLElement* channel = chaneelconfig->FirstChildElement("Channel");
+			CString no = CString(channel->Attribute("No"));
+			while (channel->NextSibling() != nullptr) {
+				if (m_tree.GetItemText(parentcom).Find(no) > -1) {
+					break;
+				}
+				else {
+					channel = channel->NextSiblingElement();
+					no = CString(channel->Attribute("No"));
+				}
+			}
+			if (m_tree.GetItemText(parentcom).Find(no) > -1) {
+				if (channel->FirstChildElement()->NextSibling() != nullptr) {
+					XMLElement* dev = channel->FirstChildElement("Device");
+					CString devname = CString(dev->Attribute("Name"));
+					while (dev->NextSibling() != nullptr) {
+						if (cs.Find(devname) > -1) {
+							break;
+						}
+						else {
+							dev = dev->NextSiblingElement();
+							devname = CString(dev->Attribute("Name"));
+						}
+
+					}
+					if (cs.Find(devname) > -1){
+						channel->DeleteChild(dev);
+						doc.SaveFile("ConfigFile.xml");
+					}
+
+				}
+				else {
+					return;
+				}
+			}
+			else{
+				return;
+			}
 	}else
 		MessageBox(_T("非法删除"));
 	}
@@ -596,7 +643,6 @@ void CMFCApplication3Dlg::OnBnClickedCancel()
 }
 
 
-
 void CMFCApplication3Dlg::OnSaveXml()
 {
 	HTREEITEM selItem;
@@ -608,7 +654,9 @@ void CMFCApplication3Dlg::OnSaveXml()
 	}
 else if(cs.Find(_T("Device")) > 0)
 {
-		saveDevicexml(cs);
+		selItem = m_tree.GetParentItem(selItem);
+		cs = m_tree.GetItemText(selItem);
+		savexml(cs, selItem);
 	}
 else {
 		MessageBox(_T("非法保存"));
@@ -847,7 +895,6 @@ void CMFCApplication3Dlg::savexml(CString cs,HTREEITEM selItem) {
 			else {
 				tinyxml2::XMLElement* CommMode = channel->FirstChildElement("CommMode");
 				setchannel(CommMode);
-
 				setdevice(selItem, &doc,channel);
 				doc.SaveFile("ConfigFile.xml");
 				MessageBox(_T("保存配置文件成功"));
@@ -868,27 +915,76 @@ void CMFCApplication3Dlg::setdevice(HTREEITEM selItem, tinyxml2::XMLDocument* do
 	HTREEITEM dev = NULL;
 	char ch[128] = { 0 };
 	CString temp = _T(".xml");
+	tinyxml2::XMLElement* CommMode = Channel->FirstChildElement("CommMode");
 	if (m_tree.ItemHasChildren(selItem)) {
+		tinyxml2::XMLElement* devsource = nullptr;
 		tinyxml2::XMLElement* devnode = doc->NewElement("Device");
 		dev = m_tree.GetChildItem(selItem);
 		getval(ch, m_tree.GetItemText(dev));
-		devnode->SetAttribute("Name", ch);
-		getval(ch, (m_tree.GetItemText(dev) + temp));
-		devnode->SetAttribute("File", ch);
-		Channel->InsertEndChild(devnode);
+		int flagdev = -1;
+		if (CommMode->NextSibling() != nullptr) {
+			devsource = Channel->FirstChildElement("Device");
+			if (strcmp(ch,devsource->Attribute("Name"))==0) {
+				flagdev = 1;
+			}
+			while (devsource->NextSibling()!=nullptr&&flagdev==-1)
+			{
+				devsource = devsource->NextSiblingElement();
+				if (strcmp(ch, devsource->Attribute("Name")) == 0) {
+					flagdev = 1;
+				}
+			}
+			if (flagdev == -1){
+				devnode->SetAttribute("Name", ch);
+				getval(ch, (m_tree.GetItemText(dev) + temp));
+				devnode->SetAttribute("File", ch);
+				Channel->InsertEndChild(devnode);
+			}
+		}
+		else
+		{
+			devnode->SetAttribute("Name", ch);
+			getval(ch, (m_tree.GetItemText(dev) + temp));
+			devnode->SetAttribute("File", ch);
+			Channel->InsertEndChild(devnode);
+		}
 	}
 	else {
 		return;
 	}
 	while (m_tree.GetNextSiblingItem(dev) != NULL)
 	{
+		tinyxml2::XMLElement* devsource = nullptr;
 		tinyxml2::XMLElement* devnode = doc->NewElement("Device");
 		dev = m_tree.GetNextSiblingItem(dev);
 		getval(ch, m_tree.GetItemText(dev));
-		devnode->SetAttribute("Name", ch);
-		getval(ch, (m_tree.GetItemText(dev) + temp));
-		devnode->SetAttribute("File", ch);
-		Channel->InsertEndChild(devnode);
+		int flagdev = -1;
+		if (CommMode->NextSibling() != nullptr) {
+			devsource = Channel->FirstChildElement("Device");
+			if (strcmp(ch, devsource->Attribute("Name")) == 0) {
+				flagdev = 1;
+			}
+			while (devsource->NextSibling() != nullptr && flagdev == -1)
+			{
+				devsource = devsource->NextSiblingElement();
+				if (strcmp(ch, devsource->Attribute("Name")) == 0) {
+					flagdev = 1;
+				}
+			}
+			if (flagdev == -1) {
+				devnode->SetAttribute("Name", ch);
+				getval(ch, (m_tree.GetItemText(dev) + temp));
+				devnode->SetAttribute("File", ch);
+				Channel->InsertEndChild(devnode);
+			}
+		}
+		else
+		{
+			devnode->SetAttribute("Name", ch);
+			getval(ch, (m_tree.GetItemText(dev) + temp));
+			devnode->SetAttribute("File", ch);
+			Channel->InsertEndChild(devnode);
+		}
 	}
 }
 
