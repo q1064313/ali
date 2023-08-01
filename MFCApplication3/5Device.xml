@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<DevConfig Ver="1.00">
+    <Protocol Name="modbusRTU" />
+    <Dev Name="" LeadCharNum="4" deviceType="" />
+    <DevComm Baud="9600" DataSize="8" Parity="N" Stop="1" />
+    <Comm Repeat="1" Disconnect="2" InvTime="0" ReConnectTime="0" />
+    <DevPacket MaxReg="100" CrcType="0" />
+    <NodeProperty>
+        <AI Num="428">
+        </AI>
+        <DI Num="16">
+            <Node Id="0" Name="CommStatus" DataType="0" Cmd="0" RegNo="0" BitField="0" Factor="1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+            <Node Id="1" Name="DI0" DataType="0" Cmd="03" RegNo="37" BitField="0" Factor="1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+            <Node Id="2" Name="DI1" DataType="0" Cmd="03" RegNo="37" BitField="1" Factor="1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+            <Node Id="10" Name="频率过低" DataType="0" Cmd="03" RegNo="39" BitField="6" Factor="1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+            <Node Id="11" Name="总有功功率过高" DataType="0" Cmd="03" RegNo="39" BitField="7" Factor="1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+            <Node Id="12" Name="电压缺相" DataType="0" Cmd="03" RegNo="39" BitField="8" Factor="1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+            <Node Id="13" Name="开关量1断" DataType="0" Cmd="03" RegNo="39" BitField="9" Factor="1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+            <Node Id="14" Name="开关量2断" DataType="0" Cmd="03" RegNo="39" BitField="10" Factor="1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+            <Node Id="15" Name="总有功需量过高" DataType="0" Cmd="03" RegNo="39" BitField="11" Factor="1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+        </DI>
+        <ACC Num="58">
+            <Node Id="0" Name="有功电能总和" DataType="9" Cmd="03" RegNo="25" BitField="0" Factor="0.1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="kwh" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+            <Node Id="1" Name="无功电能总和" DataType="9" Cmd="03" RegNo="27" BitField="0" Factor="0.1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="kvarh" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+            <Node Id="2" Name="输入有功电能" DataType="9" Cmd="03" RegNo="29" BitField="0" Factor="0.1" bFactor="0" RecvTimeout="1000" Attr="0" Password="0" EUType="" EUInfo="" EUUnits="kwh" CloudPointType="0" FunId="" DevPointDesc="" LoopDevName="" LoopDevDesc="" CTAndPT="" filterFlag="" filter_max="" filter_min="" absRangeValue="" percentRangeValue="" stableTime="" max_value="32767.000000" min_value="-32768.000000" />
+        </ACC>
+        <DO Num="0" />
+        <AO Num="0" />
+    </NodeProperty>
+</DevConfig>

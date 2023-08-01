@@ -905,8 +905,6 @@ void CMFCApplication3Dlg::savexml(CString cs,HTREEITEM selItem) {
 }
 
 
-
-
 void CMFCApplication3Dlg::saveDevicexml(CString cs) {
 }
 

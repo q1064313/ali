@@ -194,6 +194,7 @@
     <ClInclude Include="Devtab.h" />
     <ClInclude Include="dev_basicinfo.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="json\json.h" />
     <ClInclude Include="MFCApplication3.h" />
     <ClInclude Include="MFCApplication3Dlg.h" />
     <ClInclude Include="MQTT_ZF.h" />

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "afxdialogex.h"
 #include<vector>
-
+#include"tinyxml2.h"
 // c1 对话框
 
 class c1 : public CDialogEx
@@ -48,4 +48,7 @@ public:
 	afx_msg void OnCbnSelchangeComboStopbits();
 	afx_msg void OnCbnSelchangeComboCheck();
 	afx_msg void Onsave();
+	void c1::readxml(char* ainame, const char* filename);
+	void c1::readnodedata(tinyxml2::XMLElement* readnode, char* ainame);
+	afx_msg void OnBnClickedButtonreaddata();
 };

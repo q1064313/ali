@@ -1,3 +1,63 @@
-﻿  MFCApplication3Dlg.cpp
-Q:\opencv_c++\MFCApplication3\MFCApplication3Dlg.cpp(994,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+﻿  c1.cpp
+Q:\opencv_c++\MFCApplication3\c1.cpp(144,11): warning C4101: “temp”: 未引用的局部变量
+Q:\opencv_c++\MFCApplication3\c1.cpp(339,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(346,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(353,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(366,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(569,28): warning C4244: “=”: 从“INT_PTR”转换到“USHORT”，可能丢失数据
+Q:\opencv_c++\MFCApplication3\c1.cpp(804,23): warning C4305: “参数”: 从“int”到“const _Elem”截断
+          with
+          [
+              _Elem=char
+          ]
+Q:\opencv_c++\MFCApplication3\c1.cpp(804,23): warning C4309: “参数”: 截断常量值
+Q:\opencv_c++\MFCApplication3\c1.cpp(807,23): warning C4305: “参数”: 从“int”到“const _Elem”截断
+          with
+          [
+              _Elem=char
+          ]
+Q:\opencv_c++\MFCApplication3\c1.cpp(807,23): warning C4309: “参数”: 截断常量值
+Q:\opencv_c++\MFCApplication3\c1.cpp(810,23): warning C4305: “参数”: 从“int”到“const _Elem”截断
+          with
+          [
+              _Elem=char
+          ]
+Q:\opencv_c++\MFCApplication3\c1.cpp(810,23): warning C4309: “参数”: 截断常量值
+Q:\opencv_c++\MFCApplication3\c1.cpp(813,23): warning C4305: “参数”: 从“int”到“const _Elem”截断
+          with
+          [
+              _Elem=char
+          ]
+Q:\opencv_c++\MFCApplication3\c1.cpp(813,23): warning C4309: “参数”: 截断常量值
+Q:\opencv_c++\MFCApplication3\c1.cpp(816,23): warning C4305: “参数”: 从“int”到“const _Elem”截断
+          with
+          [
+              _Elem=char
+          ]
+Q:\opencv_c++\MFCApplication3\c1.cpp(816,23): warning C4309: “参数”: 截断常量值
+Q:\opencv_c++\MFCApplication3\c1.cpp(820,23): warning C4305: “参数”: 从“int”到“const _Elem”截断
+          with
+          [
+              _Elem=char
+          ]
+Q:\opencv_c++\MFCApplication3\c1.cpp(820,23): warning C4309: “参数”: 截断常量值
+Q:\opencv_c++\MFCApplication3\c1.cpp(824,23): warning C4305: “参数”: 从“int”到“const _Elem”截断
+          with
+          [
+              _Elem=char
+          ]
+Q:\opencv_c++\MFCApplication3\c1.cpp(824,23): warning C4309: “参数”: 截断常量值
+Q:\opencv_c++\MFCApplication3\c1.cpp(827,23): warning C4305: “参数”: 从“int”到“const _Elem”截断
+          with
+          [
+              _Elem=char
+          ]
+Q:\opencv_c++\MFCApplication3\c1.cpp(827,23): warning C4309: “参数”: 截断常量值
+Q:\opencv_c++\MFCApplication3\c1.cpp(830,23): warning C4305: “参数”: 从“int”到“const _Elem”截断
+          with
+          [
+              _Elem=char
+          ]
+Q:\opencv_c++\MFCApplication3\c1.cpp(830,23): warning C4309: “参数”: 截断常量值
+Q:\opencv_c++\MFCApplication3\c1.cpp(870,19): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
   MFCApplication3.vcxproj -> Q:\opencv_c++\MFCApplication3\x64\Debug\MFCApplication3.exe

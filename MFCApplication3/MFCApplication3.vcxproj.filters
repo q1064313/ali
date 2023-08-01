@@ -57,6 +57,9 @@
     <ClInclude Include="AI.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="json\json.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication3.cpp">
